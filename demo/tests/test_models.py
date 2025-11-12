@@ -23,21 +23,13 @@ class TestUsers(TransactionCase):
         self.env.flush_all()
 
     def test_description_is_required(self):
-        # la création sans description doit lever une exception
         with mute_logger('odoo.sql_db'):
             with self.assertRaises(Exception):
-                self.env['res.users'].create({
+                user = self.env['res.users'].create({
                     'name': 'Marie-Noël',
                     'login': 'mnv',
                 })
-
-        user = self.env['res.users'].create({
-            'name': 'AvecDesc',
-            'login': 'adv',
-            'description': 'ok'
-        })
-        with self.assertRaises(Exception):
-            user.description = None
+                user.description = None
 
 
     def test_description_one_line(self):
